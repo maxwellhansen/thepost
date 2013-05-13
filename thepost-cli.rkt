@@ -18,12 +18,6 @@
 ;
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;
-; TODO:
-; allow the user to exit the program whenever in the loop
-; allow the user to change newsgroup(/address?) in the loop
-; allow the user to define sender/receiver/connecting port?
-; add a sweet GUI
 (require net/nntp)
 
 ; print out the header/body contents in a sane manner
