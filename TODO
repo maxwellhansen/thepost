@@ -2,6 +2,9 @@
 
 - Allow the user to change newsgroup(/address?) in the loop
 
-- Allow the user to define sender/receiver/connecting port?
+- Allow the user to authenticate to a password-protected server
+	* determine if server requires authentication
+
+- Search through headers for a string (regexp or exact matches?)
 
 - Add a sweet GUI
