@@ -1,6 +1,6 @@
 #!/usr/bin/env racket
 #lang racket
-; doh.rkt
+; thepost.rkt
 ; simple cli nntp client
 ; tips taken from: http://download.racket-lang.org/docs/5.0/html/net/nntp.html
 ;
@@ -19,6 +19,8 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 (require net/nntp)
+(require racket/include)
+(include "config.rkt")
 
 ; print out the header/body contents in a sane manner
 (define printer
@@ -32,9 +34,9 @@
   (lambda ()
     (display "Rudimentary NNTP Client!\n")
     ;(display "Sending port: ")
-    (define sender 119) ;(read))
+    ;(define sender 119) ;(read))
     ;(display "Input port: ")
-    (define receiver 119) ;(read))
+    ;(define receiver 119) ;(read))
     (display "Server to connect to: ")
     (define server (symbol->string (read)))
     (display "Newsgroup to read: ")
