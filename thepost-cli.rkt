@@ -30,6 +30,19 @@
       (cond ((null? (rest lst)) (first lst))
 	    (else (printf "~a\n" (first lst)) (printer (rest lst)))))))
 
+; shitty bounds checking
+(define bounds?
+  (lambda (start end input)
+    (cond [(number? input)
+	   (if (or (< input start) (> input end))
+	     #f
+	     #t)]
+	  [(symbol? input)
+	   (if (or (eq? input start) (eq? input end))
+	     #t
+	     #f)]
+	  (else #f))))
+
 (define nntp-client
   (lambda ()
     (display "Rudimentary NNTP Client!\n")
@@ -50,11 +63,11 @@
 	(printf "\nWhat message would you like to read?\nIndex of ~a from ~a to ~a: "
 		total start finish)
 	(let [(index (read))]
-	  [if (string=? (symbol->string index) "quit")
+	  [if (string=? (symbol->string index) "quit") ; bounds?
 	    ((display "Good bye!\n") (disconnect-from-server communicator) (exit))
 	    ((display "Choices: header | body | quit: ")
 	     (let [(choice (read))]
-	       (if (string=? (symbol->string choice) "quit")
+	       (if (string=? (symbol->string choice) "quit") ; bounds?
 		 [(display "Good bye!\n")
 		  (disconnect-from-server communicator)
 		  (exit)]
