@@ -45,25 +45,28 @@
 	    sender receiver server newsgroup)
     (let ((communicator (connect-to-server server #|port-number|#)))
       (define-values (total start finish) (open-news-group communicator newsgroup))
+      ; begin main program loop here!
       (let loop ()
 	(printf "\nWhat message would you like to read?\nIndex of ~a from ~a to ~a: "
 		total start finish)
 	(let [(index (read))]
-	  (display "Choices: header | body | quit: ")
-	  (let [(choice (read))]
-	    (if (string=? (symbol->string choice) "quit")
-	      [(display "Good bye!\n")
-	       (disconnect-from-server communicator)
-	       (exit)]
-	      (cond [(string=? (symbol->string choice) "header")
-		     (let ((headers (head-of-message communicator index)))
-			(newline)
-			(printer headers))]
-		    [(string=? (symbol->string choice) "body")
-		     (let ((bodies (body-of-message communicator index)))
-			(newline)
-			(printer bodies))]
-		    (else (printf "I don't understand ~a" (symbol->string choice)))))))
+	  [if (string=? (symbol->string index) "quit")
+	    ((display "Good bye!\n") (disconnect-from-server communicator) (exit))
+	    ((display "Choices: header | body | quit: ")
+	     (let [(choice (read))]
+	       (if (string=? (symbol->string choice) "quit")
+		 [(display "Good bye!\n")
+		  (disconnect-from-server communicator)
+		  (exit)]
+		 (cond [(string=? (symbol->string choice) "header")
+			(let ((headers (head-of-message communicator index)))
+			  (newline)
+			  (printer headers))]
+		       [(string=? (symbol->string choice) "body")
+			(let ((bodies (body-of-message communicator index)))
+			  (newline)
+			  (printer bodies))]
+		       (else (printf "I don't understand ~a" (symbol->string choice)))))))])
 	(loop)))))
 
 (nntp-client)
