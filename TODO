@@ -9,6 +9,6 @@
 
 - Search through headers for a string (regexp or exact matches?)
 
-- Add a sweet GUI
+- Ability to post to articles
 
-- Ncurses for CLI?
+- Add a sweet GUI
