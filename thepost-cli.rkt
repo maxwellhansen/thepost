@@ -37,6 +37,10 @@
 	   (if (or (< input start) (> input end))
 	     #f
 	     #t)]
+	  [(string? input)
+	   (if (or (string=? input start) (string=? input end))
+	     #t
+	     #f)]
 	  [(symbol? input)
 	   (if (or (eq? input start) (eq? input end))
 	     #t
