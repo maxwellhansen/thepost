@@ -1,8 +1,7 @@
 - Error/Bounds checking for input
-	* separate procedure when checking for 'quit'?
 	* throw an exception?
 
-- Allow the user to change newsgroup(/address?) in the loop
+- Allow the user to change newsgroup(/address?) in the loop (going "back")
 
 - Allow the user to authenticate to a password-protected server
 	* determine if server requires authentication
