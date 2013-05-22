@@ -69,7 +69,14 @@
         (let [(index (read))]
           (if (bounds? start finish index) ; go "back"
               (display "Article found...\n")
-              ((display "Not cool, man!\n") (loop)))
+              (cond ((number? index)
+                     ((printf "~s is out of bounds!\n" index)
+                      (loop)))
+                    ((bounds? 'q 'quit index)
+                     [(display "Good bye!\n")
+                      (disconnect-from-server communicator)
+                      (exit)])
+                    (else ((printf "I don't understand ~s\n" index) (loop)))))
           (display "Choices: header | body | quit: ")
           (let [(choice (read))]
             (if (bounds? 'q 'quit choice)
