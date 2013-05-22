@@ -24,31 +24,31 @@
 
 ; print out the header/body contents in a sane manner
 (define printer
-  (lambda (lst)
+  (λ (lst)
     (if (null? lst)
-      (display "Empty list!\n")
-      (cond ((null? (rest lst)) (first lst))
-	    (else (printf "~a\n" (first lst)) (printer (rest lst)))))))
+        (display "Empty list!\n")
+        (cond ((null? (rest lst)) (first lst))
+              (else (printf "~a\n" (first lst)) (printer (rest lst)))))))
 
 ; shitty bounds checking
 (define bounds?
-  (lambda (start end input)
+  (λ (start end input)
     (cond [(number? input)
-	   (if (or (< input start) (> input end))
-	     #f
-	     #t)]
-	  [(string? input)
-	   (if (or (string=? input start) (string=? input end))
-	     #t
-	     #f)]
-	  [(symbol? input)
-	   (if (or (eq? input start) (eq? input end))
-	     #t
-	     #f)]
-	  (else #f))))
+           (if (or (< input start) (> input end))
+               #f
+               #t)]
+          [(string? input)
+           (if (or (string=? input start) (string=? input end))
+               #t
+               #f)]
+          [(symbol? input)
+           (if (or (eq? input start) (eq? input end))
+               #t
+               #f)]
+          (else #f))))
 
 (define nntp-client
-  (lambda ()
+  (λ ()
     (display "Rudimentary NNTP Client!\n")
     ;(display "Sending port: ")
     ;(define sender 119) ;(read))
@@ -59,31 +59,32 @@
     (display "Newsgroup to read: ")
     (define newsgroup (symbol->string (read)))
     (printf "\n\nsender: ~a\nreceiver: ~s\nserver: ~a\nnewsgroup: ~a\n"
-	    sender receiver server newsgroup)
+            sender receiver server newsgroup)
     (let ((communicator (connect-to-server server #|port-number|#)))
       (define-values (total start finish) (open-news-group communicator newsgroup))
       ; begin main program loop here!
       (let loop ()
-	(printf "\nWhat message would you like to read?\nIndex of ~a from ~a to ~a: "
-		total start finish)
-	(let [(index (read))]
-	  [if (string=? (symbol->string index) "quit") ; bounds?
-	    ((display "Good bye!\n") (disconnect-from-server communicator) (exit))
-	    ((display "Choices: header | body | quit: ")
-	     (let [(choice (read))]
-	       (if (string=? (symbol->string choice) "quit") ; bounds?
-		 [(display "Good bye!\n")
-		  (disconnect-from-server communicator)
-		  (exit)]
-		 (cond [(string=? (symbol->string choice) "header")
-			(let ((headers (head-of-message communicator index)))
-			  (newline)
-			  (printer headers))]
-		       [(string=? (symbol->string choice) "body")
-			(let ((bodies (body-of-message communicator index)))
-			  (newline)
-			  (printer bodies))]
-		       (else (printf "I don't understand ~a" (symbol->string choice)))))))])
-	(loop)))))
+        (printf "\nWhat message would you like to read?\nIndex of ~a from ~a to ~a: "
+                total start finish)
+        (let [(index (read))]
+          (if (bounds? start finish index) ; go "back"
+              (display "Article found...\n")
+              ((display "Not cool, man!\n") (loop)))
+          (display "Choices: header | body | quit: ")
+          (let [(choice (read))]
+            (if (bounds? 'q 'quit choice)
+                [(display "Good bye!\n")
+                 (disconnect-from-server communicator)
+                 (exit)]
+                (cond [(string=? (symbol->string choice) "header")
+                       (let ((headers (head-of-message communicator index)))
+                         (newline)
+                         (printer headers))]
+                      [(string=? (symbol->string choice) "body")
+                       (let ((bodies (body-of-message communicator index)))
+                         (newline)
+                         (printer bodies))]
+                      (else (printf "I don't understand ~a" (symbol->string choice)))))))
+        (loop)))))
 
 (nntp-client)
