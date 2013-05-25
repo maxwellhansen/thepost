@@ -25,9 +25,9 @@
 ; print out the header/body contents in a sane manner
 (define printer
   (λ (lst)
-    (if (null? lst)
+    (if (empty? lst)
         (display "Empty list!\n")
-        (cond ((null? (rest lst)) (first lst))
+        (cond ((empty? (rest lst)) (first lst))
               (else (printf "~a\n" (first lst)) (printer (rest lst)))))))
 
 ; shitty bounds checking
@@ -50,12 +50,9 @@
 (define nntp-client
   (λ ()
     (display "Rudimentary NNTP Client!\n")
-    ;(display "Sending port: ")
-    ;(define sender 119) ;(read))
-    ;(display "Input port: ")
-    ;(define receiver 119) ;(read))
     (display "Server to connect to: ")
     (define server (symbol->string (read)))
+    ; authenticate to server
     (display "Newsgroup to read: ")
     (define newsgroup (symbol->string (read)))
     (printf "\n\nsender: ~a\nreceiver: ~s\nserver: ~a\nnewsgroup: ~a\n"
@@ -63,11 +60,12 @@
     (let ((communicator (connect-to-server server #|port-number|#)))
       (define-values (total start finish) (open-news-group communicator newsgroup))
       ; begin main program loop here!
+      ; send an article to the server
       (let loop ()
         (printf "\nWhat message would you like to read?\nIndex of ~a from ~a to ~a: "
                 total start finish)
         (let [(index (read))]
-          (if (bounds? start finish index) ; go "back"
+          (if (bounds? start finish index)
               (display "Article found...\n")
               (cond ((number? index)
                      ((printf "~s is out of bounds!\n" index)
@@ -77,6 +75,7 @@
                       (disconnect-from-server communicator)
                       (exit)])
                     (else ((printf "I don't understand ~s\n" index) (loop)))))
+          ; search through headers for a string (regexp or exact match)
           (display "Choices: header | body | quit: ")
           (let [(choice (read))]
             (if (bounds? 'q 'quit choice)
