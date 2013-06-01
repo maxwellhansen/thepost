@@ -6,3 +6,5 @@
 - Ability to post to articles
 
 - Add a sweet GUI
+
+- ffi/unsafe for ncurses?
