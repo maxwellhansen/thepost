@@ -60,7 +60,7 @@
     (let ((communicator (connect-to-server server #|port-number|#)))
       (define-values (total start finish) (open-news-group communicator newsgroup))
       ; begin main program loop here!
-      ; send an article to the server
+      ; to add: send an article to the server
       (let loop ()
         (printf "\nWhat message would you like to read?\nIndex of ~a from ~a to ~a: "
                 total start finish)
@@ -75,7 +75,7 @@
                       (disconnect-from-server communicator)
                       (exit)])
                     (else ((printf "I don't understand ~s\n" index) (loop)))))
-          ; search through headers for a string (regexp or exact match)
+          ; to add: search through headers for a string (regexp or exact match)
           (display "Choices: header | body | quit: ")
           (let [(choice (read))]
             (if (bounds? 'q 'quit choice)
