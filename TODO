@@ -1,5 +1,3 @@
-- Search through headers for a string (regexp or exact matches?)
-
 - Allow the user to authenticate to a password-protected server
 	* determine if server requires authentication
 

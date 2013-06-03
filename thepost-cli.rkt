@@ -75,7 +75,6 @@
                       (disconnect-from-server communicator)
                       (exit)])
                     (else ((printf "I don't understand ~s\n" index) (loop)))))
-          ; to add: search through headers for a string (regexp or exact match)
           (display "Choices: header | body | quit: ")
           (let [(choice (read))]
             (if (bounds? 'q 'quit choice)
