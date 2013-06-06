@@ -23,16 +23,14 @@
 (include "config.rkt")
 
 ; print out the header/body contents in a sane manner
-(define printer
-  (λ (lst)
+(define (printer lst)
     (if (empty? lst)
         (display "Empty list!\n")
         (cond ((empty? (rest lst)) (first lst))
               (else (printf "~a\n" (first lst)) (printer (rest lst)))))))
 
 ; shitty bounds checking
-(define bounds?
-  (λ (start end input)
+(define (bounds? start end input)
     (cond [(number? input)
            (if (or (< input start) (> input end))
                #f
@@ -47,8 +45,7 @@
                #f)]
           (else #f))))
 
-(define nntp-client
-  (λ ()
+(define (nntp-client)
     (display "Rudimentary NNTP Client!\n")
     (display "Server to connect to: ")
     (define server (symbol->string (read)))
